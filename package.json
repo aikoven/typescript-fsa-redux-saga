@@ -1,0 +1,46 @@
+{
+  "name": "typescript-fsa-redux-saga",
+  "version": "1.0.0",
+  "description": "TypeScript FSA utilities for redux-saga",
+  "keywords": [
+    "redux-saga",
+    "typescript",
+    "action",
+    "action creator"
+  ],
+  "main": "lib/index.js",
+  "jsnext:main": "es/index.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "es",
+    "lib"
+  ],
+  "repository": "aikoven/typescript-fsa-redux-saga",
+  "scripts": {
+    "clean": "rimraf lib es",
+    "lint": "tslint -c tslint.json src/**/*.ts tests/**/*.ts",
+    "test": "ts-node -P tsconfig.tests.json node_modules/.bin/tape tests/*.ts",
+    "build:es": "tsc",
+    "build:lib": "babel es --out-dir lib && cpx \"es/*.d.ts\" lib",
+    "build": "npm run build:es && npm run build:lib",
+    "prepublish": "npm run clean && npm run lint && npm run test && npm run build"
+  },
+  "author": "Daniel Lytkin <dan.lytkin@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/tape": "^4.2.28",
+    "babel-cli": "^6.22.2",
+    "babel-preset-es2015": "^6.22.0",
+    "cpx": "^1.5.0",
+    "redux": "^3.6.0",
+    "rimraf": "^2.5.4",
+    "tape": "^4.6.2",
+    "ts-node": "^2.0.0",
+    "tslint": "^4.1.0",
+    "typescript": "^2.1.5"
+  },
+  "dependencies": {
+    "redux-saga": "^0.14.3",
+    "typescript-fsa": "^2.0.0"
+  }
+}
