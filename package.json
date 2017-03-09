@@ -1,6 +1,6 @@
 {
   "name": "typescript-fsa-redux-saga",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "TypeScript FSA utilities for redux-saga",
   "keywords": [
     "redux-saga",
