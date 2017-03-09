@@ -9,7 +9,7 @@
     "action creator"
   ],
   "main": "lib/index.js",
-  "jsnext:main": "es/index.js",
+  "module": "es/index.js",
   "typings": "lib/index.d.ts",
   "files": [
     "es",
