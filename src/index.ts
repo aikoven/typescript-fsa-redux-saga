@@ -50,7 +50,7 @@ export function bindAsyncAction(
       yield put(actionCreator.started(params));
 
       try {
-        const result = yield call(worker, params, ...args);
+        const result = yield (call as any)(worker, params, ...args);
         yield put(actionCreator.done({params, result}));
         return result;
       } catch (error) {
