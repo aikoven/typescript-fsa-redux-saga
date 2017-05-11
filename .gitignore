@@ -8,3 +8,7 @@ npm-*.log
 
 # OS X
 .DS_Store
+
+# build
+es
+lib
