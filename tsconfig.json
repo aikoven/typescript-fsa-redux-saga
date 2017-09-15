@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "es2015",
+    "target": "es3",
+    "module": "commonjs",
     "lib": ["es2015"],
     "moduleResolution": "node",
+    "importHelpers": true,
     "declaration": true,
-    "declarationDir": "es",
-    "outDir": "es",
+    "declarationDir": "lib",
+    "outDir": "lib",
+    "sourceMap": true,
     "noImplicitReturns": true,
     "noImplicitAny": true,
     "strictNullChecks": true
