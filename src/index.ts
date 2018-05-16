@@ -2,10 +2,13 @@ import {AsyncActionCreators} from "typescript-fsa" ;
 import {SagaIterator} from "redux-saga";
 import {put, call, cancelled} from "redux-saga/effects";
 
+export interface BindAsyncActionOptions {
+  skipStartedAction?: boolean;
+}
 
 export function bindAsyncAction<R>(
   actionCreators: AsyncActionCreators<void, R, any>,
-  mustDispatchStartedAction?: boolean,
+  options?: BindAsyncActionOptions,
 ): {
   (worker: () => Promise<R> | SagaIterator): () => SagaIterator;
 
@@ -26,7 +29,7 @@ export function bindAsyncAction<R>(
 };
 export function bindAsyncAction<P, R>(
   actionCreators: AsyncActionCreators<P, R, any>,
-  mustDispatchStartedAction?: boolean,
+  options?: BindAsyncActionOptions,
 ): {
   (worker: (params: P) => Promise<R> | SagaIterator):
     (params: P) => SagaIterator;
@@ -45,12 +48,12 @@ export function bindAsyncAction<P, R>(
 
 export function bindAsyncAction(
   actionCreator: AsyncActionCreators<any, any, any>,
-  mustDispatchStartedAction: boolean = true,
+  options: BindAsyncActionOptions = {},
 ) {
   return (worker: (params: any,
                    ...args: any[]) => Promise<any> | SagaIterator) => {
     function* boundAsyncActionSaga(params: any, ...args: any[]): SagaIterator {
-      if (mustDispatchStartedAction) {
+      if (!options.skipStartedAction) {
         yield put(actionCreator.started(params));
       }
 

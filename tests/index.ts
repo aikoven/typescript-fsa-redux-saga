@@ -6,7 +6,7 @@ import sagaMiddlewareFactory from "redux-saga";
 import {call, race, take} from "redux-saga/effects";
 import {deferred} from "redux-saga/utils";
 
-import {bindAsyncAction} from "../src/index";
+import {bindAsyncAction, BindAsyncActionOptions} from "../src/index";
 
 type Params = {foo: string};
 type Result = {args: any[]};
@@ -22,14 +22,14 @@ type State = {
   };
 };
 
-function createAll() {
+function createAll(options?: BindAsyncActionOptions) {
   const actionCreator = actionCreatorFactory();
 
   const asyncActions = actionCreator.async<Params, Result>('ASYNC');
 
   const dfd = deferred();
 
-  const asyncWorker = bindAsyncAction(asyncActions)(
+  const asyncWorker = bindAsyncAction(asyncActions, options)(
     (params: Params, ...args: any[]) => dfd.promise.then(() => ({args})),
   );
 
@@ -127,9 +127,7 @@ test('bindAsyncAction', ({test}: Test) => {
       result: {args: [1, 2, 3]},
     });
   }));
-});
 
-test('bindAsyncAction', ({test}: Test) => {
   test('reject', async(async (assert) => {
     const {store, dfd, output} = createAll();
 
@@ -155,9 +153,7 @@ test('bindAsyncAction', ({test}: Test) => {
       error: {message: 'Error'},
     });
   }));
-});
 
-test('bindAsyncAction', ({test}: Test) => {
   test('cancel', async(async (assert) => {
     const {store, dfd, output} = createAll();
 
@@ -181,6 +177,29 @@ test('bindAsyncAction', ({test}: Test) => {
     });
     assert.deepEqual(output, {
       cancelled: true,
+    });
+  }));
+
+  test('skipStartedAction', async(async (assert) => {
+    const {store, dfd, output} = createAll({skipStartedAction: true});
+
+    await delay(50);
+
+    assert.deepEqual(store.getState(), {});
+    assert.deepEqual(output, {});
+
+    dfd.resolve({});
+
+    await delay(50);
+
+    assert.deepEqual(store.getState(), {
+      done: {
+        params: {foo: 'bar'},
+        result: {args: [1, 2, 3]},
+      },
+    });
+    assert.deepEqual(output, {
+      result: {args: [1, 2, 3]},
     });
   }));
 });

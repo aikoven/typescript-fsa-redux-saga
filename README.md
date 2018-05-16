@@ -1,5 +1,5 @@
 # [TypeScript FSA](https://github.com/aikoven/typescript-fsa) utilities for redux-saga [![npm version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]
- 
+
 ## Installation
 
 ```
@@ -8,13 +8,19 @@ npm install --save typescript-fsa-redux-saga
 
 ## API
 
-### `bindAsyncAction(actionCreators: AsyncActionCreators, mustDispatchStartedAction?: boolean): HigherOrderSaga`
+### `bindAsyncAction(actionCreators: AsyncActionCreators, options?: BindAsyncActionOptions): HigherOrderSaga`
 
 Creates higher-order-saga that wraps target saga with async actions.
 Resulting saga dispatches `started` action once started and `done`/`failed`
 upon finish.
 
-`started` action dispatch can be disabled using `mustDispatchStartedAction` argument. This is useful when using `takeLatest/takeEvery` and you want to avoid having to manually dispatch an extra trigger action. This way, you only have to manually dispatch an `started` action, and saga will dispatch `done`/`failed` upon finish.
+#### Options
+
+* `skipStartedAction`: Set to `true` if you want to use `started` action as a
+  trigger instead of an event. This is useful when using
+  `takeLatest`/`takeEvery` and you want to avoid having to manually dispatch an
+  extra trigger action. This way, you only have to manually dispatch an
+  `started` action, and saga will dispatch `done`/`failed` upon finish.
 
 
 **Example:**
@@ -26,27 +32,27 @@ import actionCreatorFactory from 'typescript-fsa';
 const actionCreator = actionCreatorFactory();
 
 // specify parameters and result shapes as generic type arguments
-export const doSomething = 
+export const doSomething =
   actionCreator.async<{foo: string},   // parameter type
                       {bar: number}    // result type
                      >('DO_SOMETHING');
-                      
+
 // saga.ts
 import {SagaIterator} from 'redux-saga';
 import {call} from 'redux-saga/effects';
 import {doSomething} from './actions';
-                      
+
 const doSomethingWorker = bindAsyncAction(doSomething)(
   function* (params): SagaIterator {
     // `params` type is `{foo: string}`
     const bar = yield call(fetchSomething, params.foo);
     return {bar};
-  },       
-);        
-              
+  },
+);
+
 function* mySaga(): SagaIterator {
   yield call(doSomethingWorker, {foo: 'lol'});
-}              
+}
 ```
 
 [npm-image]: https://badge.fury.io/js/typescript-fsa-redux-saga.svg
