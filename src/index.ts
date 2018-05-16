@@ -5,6 +5,7 @@ import {put, call, cancelled} from "redux-saga/effects";
 
 export function bindAsyncAction<R>(
   actionCreators: AsyncActionCreators<void, R, any>,
+  mustDispatchStartedAction?: boolean,
 ): {
   (worker: () => Promise<R> | SagaIterator): () => SagaIterator;
 
@@ -25,6 +26,7 @@ export function bindAsyncAction<R>(
 };
 export function bindAsyncAction<P, R>(
   actionCreators: AsyncActionCreators<P, R, any>,
+  mustDispatchStartedAction?: boolean,
 ): {
   (worker: (params: P) => Promise<R> | SagaIterator):
     (params: P) => SagaIterator;
@@ -43,11 +45,14 @@ export function bindAsyncAction<P, R>(
 
 export function bindAsyncAction(
   actionCreator: AsyncActionCreators<any, any, any>,
+  mustDispatchStartedAction: boolean = true,
 ) {
   return (worker: (params: any,
                    ...args: any[]) => Promise<any> | SagaIterator) => {
     function* boundAsyncActionSaga(params: any, ...args: any[]): SagaIterator {
-      yield put(actionCreator.started(params));
+      if (mustDispatchStartedAction) {
+        yield put(actionCreator.started(params));
+      }
 
       try {
         const result = yield (call as any)(worker, params, ...args);

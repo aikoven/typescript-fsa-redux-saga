@@ -8,11 +8,14 @@ npm install --save typescript-fsa-redux-saga
 
 ## API
 
-### `bindAsyncAction(actionCreators: AsyncActionCreators): HigherOrderSaga`
+### `bindAsyncAction(actionCreators: AsyncActionCreators, mustDispatchStartedAction?: boolean): HigherOrderSaga`
 
 Creates higher-order-saga that wraps target saga with async actions.
 Resulting saga dispatches `started` action once started and `done`/`failed`
 upon finish.
+
+`started` action dispatch can be disabled using `mustDispatchStartedAction` argument. This is useful when using `takeLatest/takeEvery` and you want to avoid having to manually dispatch an extra trigger action. This way, you only have to manually dispatch an `started` action, and saga will dispatch `done`/`failed` upon finish.
+
 
 **Example:**
 
