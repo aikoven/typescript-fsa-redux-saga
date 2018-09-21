@@ -512,7 +512,7 @@ rc@^1.0.1, rc@^1.1.6:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-"redux-saga@>=0.14.0 <0.17.0 || 1.0.0-beta.0 || 1.0.0-beta.1":
+"redux-saga@>=0.14.0 <0.17.0 || 1.0.0-beta.0 || 1.0.0-beta.1 || 1.0.0-beta.2":
   version "0.16.0"
   resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-0.16.0.tgz#0a231db0a1489301dd980f6f2f88d8ced418f724"
 
@@ -718,9 +718,9 @@ tsutils@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-1.1.0.tgz#94e0c267624eeb1b63561ba8ec0bcff71b4e2872"
 
-typescript-fsa@^2.0.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/typescript-fsa/-/typescript-fsa-2.5.0.tgz#1baec01b5e8f5f34c322679d1327016e9e294faf"
+typescript-fsa@^3.0.0-beta-2:
+  version "3.0.0-beta-2"
+  resolved "https://registry.yarnpkg.com/typescript-fsa/-/typescript-fsa-3.0.0-beta-2.tgz#1cc1d0c014c025fd51cba097776033ac4b6b753c"
 
 typescript@^2.5.2:
   version "2.8.3"
