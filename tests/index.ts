@@ -1,12 +1,12 @@
 import test = require('tape');
-import {Test} from "tape";
-import actionCreatorFactory, {isType} from "typescript-fsa";
-import {Action, createStore, applyMiddleware} from "redux";
-import sagaMiddlewareFactory from "redux-saga";
-import {call, race, take} from "redux-saga/effects";
-import {deferred} from "redux-saga/utils";
+import {Test} from 'tape';
+import actionCreatorFactory, {isType} from 'typescript-fsa';
+import {Action, createStore, applyMiddleware} from 'redux';
+import sagaMiddlewareFactory from 'redux-saga';
+import {call, race, take} from 'redux-saga/effects';
+import deferred from '@redux-saga/deferred';
 
-import {bindAsyncAction, BindAsyncActionOptions} from "../src/index";
+import {bindAsyncAction, BindAsyncActionOptions} from '../src/index';
 
 type Params = {foo: string};
 type Result = {args: any[]};
@@ -77,7 +77,6 @@ function createAll(options?: BindAsyncActionOptions) {
       } else {
         output.cancelled = true;
       }
-
     } catch (e) {
       output.error = e;
     }
@@ -88,10 +87,7 @@ function createAll(options?: BindAsyncActionOptions) {
 
 function async(fn: (assert: Test) => Promise<any>) {
   return (assert: Test) => {
-    fn(assert).then(
-      () => assert.end(),
-      error => assert.fail(error),
-    );
+    fn(assert).then(() => assert.end(), error => assert.fail(error));
   };
 }
 
@@ -102,7 +98,7 @@ function delay(ms: number) {
 }
 
 test('bindAsyncAction', ({test}: Test) => {
-  test('resolve', async(async (assert) => {
+  test('resolve', async(async assert => {
     const {store, dfd, output} = createAll();
 
     await delay(50);
@@ -128,7 +124,7 @@ test('bindAsyncAction', ({test}: Test) => {
     });
   }));
 
-  test('reject', async(async (assert) => {
+  test('reject', async(async assert => {
     const {store, dfd, output} = createAll();
 
     await delay(50);
@@ -154,7 +150,7 @@ test('bindAsyncAction', ({test}: Test) => {
     });
   }));
 
-  test('cancel', async(async (assert) => {
+  test('cancel', async(async assert => {
     const {store, dfd, output} = createAll();
 
     await delay(50);
@@ -180,7 +176,7 @@ test('bindAsyncAction', ({test}: Test) => {
     });
   }));
 
-  test('skipStartedAction', async(async (assert) => {
+  test('skipStartedAction', async(async assert => {
     const {store, dfd, output} = createAll({skipStartedAction: true});
 
     await delay(50);
@@ -203,4 +199,3 @@ test('bindAsyncAction', ({test}: Test) => {
     });
   }));
 });
-
