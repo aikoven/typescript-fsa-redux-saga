@@ -36,6 +36,6 @@
   "dependencies": {
     "redux-saga": "^1.0.0",
     "tslib": "^1.7.1",
-    "typescript-fsa": "^2.0.0 || ^3.0.0-beta-2"
+    "typescript-fsa": "^3.0.0"
   }
 }
